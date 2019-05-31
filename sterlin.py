@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-
 r = requests.get("https://kur.doviz.com/serbest-piyasa/sterlin")
 
 soup = BeautifulSoup(r.text, "xml")
@@ -15,20 +14,14 @@ td = table.find_all("td")
 
 i = 0
 banka=[]
+alis = []
+satis = []
 for i in range(0,len(td),3):
   banka.append(td[i].text)
-
-alis = []
-for i in range(1,len(td),3):
-  alis.append(float((td[i].text).replace(',', '.')))
-
-
-satis = []
-for i in range(2,len(td),3):
-  satis.append(float((td[i].text).replace(',', '.')))
+  alis.append(float((td[i+1].text).replace(',', '.')))
+  satis.append(float((td[i+2].text).replace(',', '.')))
 
 d = {'Banka': banka, 'Alış': alis, 'Satış': satis}
-
 df = pd.DataFrame(data=d)
 print(df)
 
